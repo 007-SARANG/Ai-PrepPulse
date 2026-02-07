@@ -15,7 +15,8 @@
 > *(Please record a 5-minute video showing the complete workflow: form filling → assessment → results display)*
 
 ### Quick Demo Preview
-![AI PrepPulse Screenshot](./demo-screenshot.png)
+![AI PrepPulse Screenshot](./demo-screenshot1.png)
+![AI PrepPulse Screenshot](./demo-screenshot2.png)
 *Screenshot showing the assessment interface and results dashboard*
 
 ---
