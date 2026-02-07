@@ -1,0 +1,322 @@
+.action-plan {
+  width: 100%;
+}
+
+.action-plan h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--accent-cyan);
+  padding-bottom: 0.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  text-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+}
+
+.key-recommendation {
+  background: rgba(20, 27, 58, 0.6);
+  border-left: 5px solid var(--accent-cyan);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.2);
+  transition: all 0.3s ease;
+  animation: recommendationPulse 0.6s ease-out;
+  border: 1px solid var(--border-color);
+}
+
+@keyframes recommendationPulse {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.key-recommendation:hover {
+  transform: translateX(10px);
+  box-shadow: 0 0 50px rgba(0, 245, 255, 0.4);
+  border-left-width: 8px;
+  border-left-color: var(--accent-cyan);
+  border-color: rgba(0, 245, 255, 0.3);
+}
+
+.recommendation-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  animation: iconBounce 1s ease-out;
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  75% { transform: translateY(-5px); }
+}
+
+.recommendation-content h4 {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.recommendation-content p {
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.timeline-estimate {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(10, 14, 39, 0.6);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.1);
+}
+
+.timeline-icon {
+  font-size: 1.5rem;
+}
+
+.timeline-text {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.timeline-text strong {
+  color: var(--accent-cyan);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+}
+
+.action-steps h4 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: step-counter;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background: rgba(20, 27, 58, 0.6);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--gradient-primary);
+  transform: scaleY(0);
+  transition: transform 0.4s ease;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.step-item:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(20, 27, 58, 0.8);
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+  transform: translateX(12px);
+}
+
+.step-item:hover::before {
+  transform: scaleY(1);
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+  transition: all 0.3s ease;
+  font-family: 'Space Grotesk', sans-serif;
+  border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+.step-item:hover .step-number {
+  transform: scale(1.15) rotate(360deg);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.8);
+}
+
+.step-text {
+  flex: 1;
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  font-weight: 500;
+}
+
+.next-steps-cta {
+  margin-top: 2rem;
+  padding: 1.75rem 2rem;
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.4);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+.cta-text {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Animation for steps appearing */
+@keyframes stepAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-item {
+  animation: stepAppear 0.5s ease-out backwards;
+}
+
+.step-item:nth-child(1) { animation-delay: 0.1s; }
+.step-item:nth-child(2) { animation-delay: 0.2s; }
+.step-item:nth-child(3) { animation-delay: 0.3s; }
+.step-item:nth-child(4) { animation-delay: 0.4s; }
+.step-item:nth-child(5) { animation-delay: 0.5s; }
+
+@media (max-width: 768px) {
+  .action-plan h3 {
+    font-size: 1.4rem;
+  }
+  
+  .key-recommendation {
+    flex-direction: row;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+  
+  .recommendation-icon {
+    font-size: 2rem;
+  }
+
+  .recommendation-content h4 {
+    font-size: 1.1rem;
+  }
+
+  .recommendation-content p {
+    font-size: 0.95rem;
+  }
+
+  .timeline-estimate {
+    font-size: 0.9rem;
+    padding: 0.875rem;
+  }
+  
+  .step-item {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .step-number {
+    min-width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .step-text {
+    font-size: 0.95rem;
+  }
+
+  .next-steps-cta {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .cta-text {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .key-recommendation {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .recommendation-icon {
+    font-size: 1.8rem;
+  }
+
+  .step-item {
+    padding: 0.875rem;
+  }
+
+  .step-number {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .next-steps-cta {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,245 @@
+.score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.score-circle-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  animation: floatIn 1s ease-out;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.score-circle {
+  transform: scale(1);
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 30px rgba(0, 245, 255, 0.5));
+}
+
+.score-circle:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 50px rgba(0, 245, 255, 0.8));
+}
+
+.score-progress {
+  transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 12px currentColor);
+}
+
+.score-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: numberCount 1.5s ease-out;
+}
+
+@keyframes numberCount {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.score-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  letter-spacing: -2px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.score-max {
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.readiness-level {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  border-radius: 30px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: 
+    0 0 40px rgba(0, 245, 255, 0.5),
+    0 0 0 1px rgba(0, 245, 255, 0.3) inset;
+  animation: levelSlide 0.8s ease-out;
+  letter-spacing: 1px;
+  font-family: 'Space Grotesk', sans-serif;
+  border: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+@keyframes levelSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.level-emoji {
+  font-size: 1.8rem;
+  animation: emojiSpin 1s ease-out;
+}
+
+@keyframes emojiSpin {
+  from { transform: rotate(-360deg) scale(0); }
+  to { transform: rotate(0deg) scale(1); }
+}
+
+.level-text {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.score-interpretation {
+  text-align: center;
+  max-width: 100%;
+}
+
+.interpretation {
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  margin: 0;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 2px solid;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.interpretation.excellent {
+  background: rgba(0, 255, 159, 0.1);
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 30px rgba(0, 255, 159, 0.3);
+}
+
+.interpretation.good {
+  background: rgba(77, 163, 255, 0.1);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 30px rgba(77, 163, 255, 0.3);
+}
+
+.interpretation.moderate {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ffab40;
+  border-color: #ff9800;
+  box-shadow: 0 0 30px rgba(255, 152, 0, 0.3);
+}
+
+.interpretation.needs-work {
+  background: rgba(255, 46, 151, 0.1);
+  color: var(--accent-pink);
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 30px rgba(255, 46, 151, 0.3);
+}
+
+@media (max-width: 768px) {
+  .score-circle-container {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .score-circle {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .score-number {
+    font-size: 3rem;
+    letter-spacing: -1.5px;
+  }
+
+  .score-max {
+    font-size: 1.2rem;
+  }
+  
+  .readiness-level {
+    font-size: 1.2rem;
+    padding: 0.875rem 1.75rem;
+    letter-spacing: 1.5px;
+  }
+
+  .level-emoji {
+    font-size: 1.6rem;
+  }
+
+  .interpretation {
+    font-size: 0.95rem;
+    padding: 1.1rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .score-circle-container {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .score-circle {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .score-number {
+    font-size: 2.5rem;
+  }
+
+  .score-max {
+    font-size: 1rem;
+  }
+
+  .readiness-level {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
