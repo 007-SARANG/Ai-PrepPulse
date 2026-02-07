@@ -6,13 +6,11 @@
 
 **AI PrepPulse** is an innovative AI-powered tool that helps students and job seekers objectively measure their interview readiness in under 2 minutes. Get actionable insights, personalized improvement plans, and a comprehensive readiness score before facing real recruiters.
 
-## 🎬 Demo Video
+## LIVE Demo
 
 **Watch the full demo here:** 
 
-> 📹 **[INSERT YOUR SCREEN RECORDING VIDEO LINK HERE]**
-> 
-> *(Please record a 5-minute video showing the complete workflow: form filling → assessment → results display)*
+>  **[[DEMO LINK]](https://ai-prep-pulse.vercel.app/)**
 
 ### Quick Demo Preview
 ![AI PrepPulse Screenshot](./demo-screenshot1.png)
