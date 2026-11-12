@@ -17,3 +17,5 @@ No changes to the user's profile information or assessment model/scoring rubric.
 - Independent review found a malformed-result crash path; shared browser/API contract validation now rejects that output. Regression tests were observed failing before the fix and passing afterward.
 - Production build compiles. Browser inspection covers desktop, 390px and 320px; final production flow remains to be verified after deployment.
 - Gemini model is configurable with GEMINI_MODEL; the default gemini-3.8-flash identifier was checked against Google's current model documentation on 2026-11-12. No configured key was read or copied. Without a key, labelled rule-based output is returned immediately.
+
+Deployment verification found the provider request could wait indefinitely. Added a 15-second provider deadline and a 25-second browser request deadline; a provider failure recovers to a labelled report. The deadline regression test failed before the change and passed afterward. Final local verification: six frontend tests, seven backend/contract tests, and the production build pass.

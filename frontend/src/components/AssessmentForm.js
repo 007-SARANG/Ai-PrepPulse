@@ -56,7 +56,9 @@ export default function AssessmentForm({ onComplete, loading, setLoading }) {
         payload.append(key, value),
       );
       if (resumeFile) payload.append("resume", resumeFile);
-      const response = await axios.post("/api/assessment/analyze", payload);
+      const response = await axios.post("/api/assessment/analyze", payload, {
+        timeout: 25000,
+      });
       if (!isValidAnalysis(response.data))
         throw new Error(
           "The assessment returned an incomplete report. Please try again.",

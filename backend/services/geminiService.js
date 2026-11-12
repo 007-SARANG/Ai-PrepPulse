@@ -72,7 +72,7 @@ SCORING CRITERIA:
 
 Be honest, specific, and actionable. Focus on what matters for landing interviews in their target role.`;
 
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent(prompt, { timeout: 15000 });
     const response = await result.response;
     let text = response.text();
 
