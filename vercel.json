@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "npm ci --prefix frontend && npm ci --prefix backend",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend/build"
+}

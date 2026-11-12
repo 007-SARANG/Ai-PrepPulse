@@ -1,47 +1,36 @@
-import React from 'react';
-import './ActionPlan.css';
-
-function ActionPlan({ steps, timeline, recommendation }) {
+import React from "react";
+export default function ActionPlan({ steps = [], timeline, recommendation }) {
   return (
-    <div className="action-plan">
-      <h3>🎯 Your Personalized Action Plan</h3>
-      
+    <section className="action-plan" aria-labelledby="action-title">
+      <div className="report-section-heading">
+        <div>
+          <h2 id="action-title">Make your next move</h2>
+          <p>A focused plan to take forward.</p>
+        </div>
+        {timeline && (
+          <span className="timeline">Suggested horizon: {timeline}</span>
+        )}
+      </div>
       {recommendation && (
-        <div className="key-recommendation">
-          <div className="recommendation-icon">💡</div>
-          <div className="recommendation-content">
-            <h4>Key Recommendation</h4>
-            <p>{recommendation}</p>
-          </div>
+        <div className="recommendation">
+          <h3>Start here</h3>
+          <p>{recommendation}</p>
         </div>
       )}
-
-      <div className="timeline-estimate">
-        <span className="timeline-icon">⏱️</span>
-        <span className="timeline-text">
-          Estimated timeline to become interview-ready: <strong>{timeline}</strong>
-        </span>
-      </div>
-
-      <div className="action-steps">
-        <h4>Action Items to Complete:</h4>
-        <ol className="steps-list">
-          {steps.map((step, index) => (
-            <li key={index} className="step-item">
-              <span className="step-number">{index + 1}</span>
-              <span className="step-text">{step}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div className="next-steps-cta">
-        <p className="cta-text">
-          💪 Ready to take action? Start with step 1 today and track your progress!
+      <ol className="action-steps">
+        {steps.map((step, i) => (
+          <li key={i}>
+            <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+      {!steps.length && (
+        <p className="empty-note">
+          No specific action items were returned. Try adding more detail to your
+          profile.
         </p>
-      </div>
-    </div>
+      )}
+    </section>
   );
 }
-
-export default ActionPlan;

@@ -1,10 +1,21 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { isValidAnalysis } = require("../utils/validateAnalysis");
 
 async function analyzeProfile(profileData) {
+  if (
+    !process.env.GEMINI_API_KEY ||
+    process.env.GEMINI_API_KEY === "your_gemini_api_key_here"
+  ) {
+    return {
+      ...generateFallbackAnalysis(profileData),
+      analysisMethod: "rule-based",
+    };
+  }
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+    });
 
     const prompt = `You are an expert career counselor and interview preparation specialist. Analyze this candidate's profile and provide a comprehensive interview readiness assessment.
 
@@ -15,10 +26,10 @@ CANDIDATE PROFILE:
 - Technical Skills: ${profileData.technicalSkills}
 - Projects Completed: ${profileData.projectsCompleted}
 - Communication Confidence (1-10): ${profileData.communicationConfidence}
-- LinkedIn: ${profileData.linkedinUrl || 'Not provided'}
-- Portfolio: ${profileData.portfolioUrl || 'Not provided'}
-- GitHub: ${profileData.githubUrl || 'Not provided'}
-${profileData.resumeText ? `\n- Resume Content:\n${profileData.resumeText.substring(0, 2000)}` : ''}
+- LinkedIn: ${profileData.linkedinUrl || "Not provided"}
+- Portfolio: ${profileData.portfolioUrl || "Not provided"}
+- GitHub: ${profileData.githubUrl || "Not provided"}
+${profileData.resumeText ? `\n- Resume Content:\n${profileData.resumeText.substring(0, 2000)}` : ""}
 
 INSTRUCTIONS:
 Provide a JSON response with the following structure (respond ONLY with valid JSON, no markdown formatting):
@@ -64,60 +75,66 @@ Be honest, specific, and actionable. Focus on what matters for landing interview
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let text = response.text();
-    
+
     // Clean up the response - remove markdown code blocks if present
-    text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    
+    text = text
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+
     // Parse the JSON response
     const analysis = JSON.parse(text);
-    
+
     // Validate the response structure
-    if (!analysis.overallScore || !analysis.readinessLevel || !analysis.breakdown) {
-      throw new Error('Invalid response structure from AI');
+    if (!isValidAnalysis(analysis)) {
+      throw new Error("Invalid response structure from AI");
     }
-    
-    return analysis;
-    
+
+    return { ...analysis, analysisMethod: "gemini" };
   } catch (error) {
-    console.error('Gemini API error:', error);
-    
+    console.error("Gemini analysis unavailable; using rule-based assessment.");
+
     // Return a fallback response if AI fails
-    return generateFallbackAnalysis(profileData);
+    return {
+      ...generateFallbackAnalysis(profileData),
+      analysisMethod: "rule-based",
+    };
   }
 }
 
 function generateFallbackAnalysis(profileData) {
   // Rule-based fallback scoring
-  let technicalScore = Math.min(100, 
-    (profileData.technicalSkills.split(',').length * 10) +
-    (profileData.projectsCompleted * 5) +
-    (profileData.yearsOfExperience * 10)
+  let technicalScore = Math.min(
+    100,
+    profileData.technicalSkills.split(",").length * 10 +
+      profileData.projectsCompleted * 5 +
+      profileData.yearsOfExperience * 10,
   );
-  
+
   let resumeScore = 50;
   if (profileData.resumeText) resumeScore += 30;
   if (profileData.linkedinUrl) resumeScore += 10;
   if (profileData.portfolioUrl) resumeScore += 10;
-  
+
   let communicationScore = profileData.communicationConfidence * 10;
-  
+
   let portfolioScore = 0;
   if (profileData.githubUrl) portfolioScore += 35;
   if (profileData.portfolioUrl) portfolioScore += 35;
   if (profileData.linkedinUrl) portfolioScore += 30;
-  
+
   const overallScore = Math.round(
-    (technicalScore * 0.3) + 
-    (resumeScore * 0.25) + 
-    (communicationScore * 0.25) + 
-    (portfolioScore * 0.2)
+    technicalScore * 0.3 +
+      resumeScore * 0.25 +
+      communicationScore * 0.25 +
+      portfolioScore * 0.2,
   );
-  
-  let readinessLevel = 'Beginner';
-  if (overallScore >= 75) readinessLevel = 'Expert';
-  else if (overallScore >= 60) readinessLevel = 'Advanced';
-  else if (overallScore >= 40) readinessLevel = 'Intermediate';
-  
+
+  let readinessLevel = "Beginner";
+  if (overallScore >= 75) readinessLevel = "Expert";
+  else if (overallScore >= 60) readinessLevel = "Advanced";
+  else if (overallScore >= 40) readinessLevel = "Intermediate";
+
   return {
     overallScore,
     readinessLevel,
@@ -125,27 +142,38 @@ function generateFallbackAnalysis(profileData) {
       technicalSkills: Math.round(technicalScore),
       resumeQuality: Math.round(resumeScore),
       communication: Math.round(communicationScore),
-      portfolio: Math.round(portfolioScore)
+      portfolio: Math.round(portfolioScore),
     },
     strengths: [
-      profileData.yearsOfExperience > 1 ? 'Relevant work experience' : 'Educational background',
-      profileData.projectsCompleted > 3 ? 'Strong project portfolio' : 'Willingness to learn',
-      'Clear career goals'
+      profileData.yearsOfExperience > 1
+        ? "Relevant work experience"
+        : "Educational background",
+      profileData.projectsCompleted > 3
+        ? "Strong project portfolio"
+        : "Willingness to learn",
+      "Clear career goals",
     ],
     gaps: [
-      portfolioScore < 50 ? 'Limited online presence - need LinkedIn/GitHub profile' : 'Could strengthen online brand',
-      technicalScore < 60 ? 'Technical skills need more depth for target role' : 'Some technical skills could be enhanced',
-      !profileData.resumeText ? 'Resume not provided for detailed analysis' : 'Resume could be optimized further'
+      portfolioScore < 50
+        ? "Limited online presence - need LinkedIn/GitHub profile"
+        : "Could strengthen online brand",
+      technicalScore < 60
+        ? "Technical skills need more depth for target role"
+        : "Some technical skills could be enhanced",
+      !profileData.resumeText
+        ? "Resume not provided for detailed analysis"
+        : "Resume could be optimized further",
     ],
     actionableSteps: [
-      'Update resume with quantifiable achievements and keywords',
-      'Build/enhance GitHub profile with 3-5 quality projects',
-      'Create or improve LinkedIn profile (complete to 100%)',
-      'Practice technical interview questions on LeetCode/HackerRank',
-      'Prepare STAR method answers for behavioral questions'
+      "Update resume with quantifiable achievements and keywords",
+      "Build/enhance GitHub profile with 3-5 quality projects",
+      "Create or improve LinkedIn profile (complete to 100%)",
+      "Practice technical interview questions on LeetCode/HackerRank",
+      "Prepare STAR method answers for behavioral questions",
     ],
-    timelineEstimate: overallScore >= 60 ? '2-3 weeks' : '1-2 months',
-    keyRecommendation: 'Focus on building practical projects and creating a strong online presence to stand out to recruiters.'
+    timelineEstimate: overallScore >= 60 ? "2-3 weeks" : "1-2 months",
+    keyRecommendation:
+      "Focus on building practical projects and creating a strong online presence to stand out to recruiters.",
   };
 }
 

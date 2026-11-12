@@ -1,50 +1,60 @@
-import React, { useState } from 'react';
-import AssessmentForm from './components/AssessmentForm';
-import Results from './components/Results';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import AssessmentForm from "./components/AssessmentForm";
+import Results from "./components/Results";
+import "./App.css";
 
-function App() {
+export default function App() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const handleAssessmentComplete = (assessmentResults) => {
-    setResults(assessmentResults);
-  };
-
-  const handleReset = () => {
-    setResults(null);
-    setLoading(false);
-  };
-
+  useEffect(() => {
+    document.getElementById("view-title")?.focus();
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [results]);
   return (
-    <div className="App">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>🎯 AI PrepPulse</h1>
-          <p className="tagline">Measure Your Interview Readiness in Under 2 Minutes</p>
-        </div>
+    <div className="app">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header className="site-header">
+        <a className="brand" href="/" aria-label="PrepPulse home">
+          <span className="brand-symbol" aria-hidden="true">
+            p.
+          </span>
+          PrepPulse<span className="brand-ai">AI</span>
+        </a>
+        <span className="header-note">
+          A little clarity. A better next step.
+        </span>
+        <a
+          className="quiet-link"
+          href="https://sarangbuilds.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Built by Sarang <span aria-hidden="true">↗</span>
+        </a>
       </header>
-
-      <main className="app-main">
-        {!results ? (
-          <AssessmentForm 
-            onComplete={handleAssessmentComplete}
+      <main id="main" className="app-main">
+        {results ? (
+          <Results
+            results={results}
+            onReset={() => {
+              setResults(null);
+              setLoading(false);
+            }}
+          />
+        ) : (
+          <AssessmentForm
+            onComplete={setResults}
             loading={loading}
             setLoading={setLoading}
           />
-        ) : (
-          <Results 
-            results={results}
-            onReset={handleReset}
-          />
         )}
       </main>
-
-      <footer className="app-footer">
-        <p>© 2026 AI PrepPulse | Powered by Google Gemini AI</p>
+      <footer className="site-footer">
+        <span>PrepPulse · {new Date().getFullYear()}</span>
+        <span>Preparation guidance, not a prediction of hiring outcomes.</span>
       </footer>
     </div>
   );
 }
-
-export default App;
